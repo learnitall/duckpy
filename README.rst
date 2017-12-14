@@ -2,8 +2,8 @@
 duckpy: a duckyscript interpreter written in Python
 ===================================================
 
-.. image: https://img.shields.io/badge/python-3-brightgreen.svg
-.. image: https://img.shields.io/badge/license-MIT-blue.svg
+.. image:: https://img.shields.io/badge/python-3-brightgreen.svg
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
 
 
 Ever find it tedious to write, modify and/or test a duckyscript? Ever wanted
@@ -22,15 +22,15 @@ Usage
 After installing, just run duckpy as a module and pass it the filepath to
 a duckyscript for execution:
 
-`python3 -m duckpy [script name]`
+``python3 -m duckpy [script name]``
 
 Use -v/--verbose to print logs:
 
-`python3 -m duckpy -v [script name]`
+``python3 -m duckpy -v [script name]``
 
 Or use -vv/--vverbose to print all the logs!:
 
-`python3 -m duckpy -vv [script name]`
+``python3 -m duckpy -vv [script name]``
 
 
 Dependencies
@@ -43,9 +43,9 @@ Requires pyautogui module. Installation instructions can be found
 Installation
 ------------
 
-Just use the given `setup.py` script:
+Just use the given ``setup.py`` script:
 
-`python3 setup.py install`
+``python3 setup.py install``
 
 
-.. include:: LICENSE.rst
+.. include:: ./LICENSE.rst
