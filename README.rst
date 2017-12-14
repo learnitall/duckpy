@@ -3,11 +3,11 @@ duckpy: a duckyscript interpreter written in Python
 ===================================================
 
 .. Define badge images
-.. | pybadge | image:: https://img.shields.io/badge/python-3-brightgreen.svg
-.. | mitbadge | image:: https://img.shields.io/badge/license-MIT-blue.svg
+.. |pybadge| image:: https://img.shields.io/badge/python-3-brightgreen.svg
+.. |mitbadge| image:: https://img.shields.io/badge/license-MIT-blue.svg
 
 
-| pybadge | | mitbadge |
+|pybadge| |mitbadge|
 
 
 Ever find it tedious to write, modify and/or test a duckyscript? Ever wanted
