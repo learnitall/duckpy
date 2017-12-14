@@ -22,6 +22,7 @@ setup(
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
+        'Development Status :: 3 - Alpha',
         'Topic :: Education :: Testing',
         'Topic :: Security',
         'Topic :: Software Development :: Interpreters',
@@ -31,10 +32,10 @@ setup(
     url='http://github.com/developforlizardz/duckpy',
     author='Ryan Drew',
     author_email='developforlizardz@gmail.com',
-    license='MIT',
+    license='mit',
     packages=['duckpy'],
     install_requires=[
       'pyautogui',
     ],
-    include_package_data=False
+    include_package_data=True
 )
