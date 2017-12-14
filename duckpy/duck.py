@@ -26,7 +26,8 @@ logging.basicConfig(
 )
 
 # Constants to aid in parsing of duckyscript
-COMMANDS = ('REM', 'DEFAULT_DELAY', 'DELAY', 'STRING')
+# Add repeat command
+COMMANDS = ('REM', 'DEFAULT_DELAY', 'DELAY', 'STRING', 'REPEAT')
 # Aliases for the above commands that will also be accepted
 ALIAS = {
     'DEFAULTDELAY': 'DEFAULT_DELAY',
@@ -104,6 +105,27 @@ def _cmd_delay(ms):
     """
 
     time.sleep(ms / 1000)
+
+
+def _cmd_repeat(dcmd, num_times):
+    """
+    Simulates the `REPEAT` command by continually executing the given
+    `DuckyCommand` for `num_times` number of times.
+
+    :param DuckyCommand dcmd: Command to repeat
+    :param int num_times: Number of times to repeat
+    :return: None
+    """
+
+    # tell command to not set default delay
+    dcmd._skip_delay = True
+
+    # execute
+    for num in range(num_times):
+        dcmd.execute()
+
+    # reset delay
+    dcmd._skip_delay = False
 
 
 def is_valid_alias(dcmd):
@@ -251,15 +273,14 @@ class DuckyCommand(object):
     :param int default_delay: Default delay to use while executing.
         Essentially determines how long to wait before executing a
         command (except in the case of REM)
-    :param func set_dd_func: To be used by `DuckyScript`, but
-        when given, this will be the function used to set the default
-        delay.
-    :param func get_dd_func: To be used by `DuckyScript` but when
-        given, this will be the function used to get the default delay.
+    :param dict script: Dictionary of `DuckyScript` methods used for
+        setting default delays and repeating commands. Used internally
+        by the `DuckyScript` class (see `DuckyScript.load`).
+    :raises ValueError: If `scripts` kwarg does not contain all
+        necessary keys for execution.
     """
 
-    def __init__(self, dline, lineno=-1, default_delay=0, set_dd_func=None,
-                 get_dd_func=None):
+    def __init__(self, dline, lineno=-1, default_delay=0, script=None):
         """
         Construct the command.
         """
@@ -272,11 +293,15 @@ class DuckyCommand(object):
         self._skip_delay = False
         # default delay to use
         self._default_delay = default_delay
-        # default delay setter to use
-        if set_dd_func:
-            self._set_default_delay = set_dd_func
-        if get_dd_func:
-            self._get_default_delay = get_dd_func
+        # script object to use, check to make sure all keys present
+        if script:
+            for key in ('get_default_delay', 'set_default_delay', 'commands'):
+                if script.get(key, None) is None:
+                    raise ValueError(
+                        "Expected key '{}' in 'script' argument not "
+                        "found".format(key)
+                    )
+        self._script = script
 
         # Line number of this command in the script
         self.lineno = lineno
@@ -287,57 +312,60 @@ class DuckyCommand(object):
         self.python_func = self._to_python(dline)
 
     def __repr__(self):
-        return "DCMD:{}".format(self.raw_line)
-
-    def _set_default_delay(self, new_delay):
-        """
-        Internal method for setting default delay. If this command
-        is a part of a script, the `DuckyScript` instance will
-        overwrite this method with its own `_set_default_delay`, which
-        will set the delay for the commands that follow. This method
-        is only defined in the case an instance of `DuckyCommand` is
-        defined outside of a script.
-
-        :param int new_delay: New default delay to set
-        :return: None
-        """
-
-        self._default_delay = new_delay
-
-    def _get_default_delay(self):
-        """
-        Internal method for getting the default delay. If this command
-        is a part of a script, the `DuckyScript` instance will
-        overwrite this method with its own `_get_default_delay`, which
-        will get the current default delay in the script at the time
-        of execution. This method is only defined in the case an
-        instance of `DuckyCommand` is defined outside of a script.
-        """
-
-        return self._default_delay
+        return "DCMD:'{}'".format(self.raw_line)
 
     @property
     def default_delay(self):
         """
-        Create the default delay property. Dynamically uses the defined
-        `_get_default_delay` method to get the value of this attribute.
+        Create the default delay property. Value of this property
+        will be determined by whether or not this command is a part of
+        a script. If so, then the script's default delay value will
+        be used, otherwise this instance's value will be used.
 
-        :return: Output of `_get_default_delay`
+        :rtype: int
+        :return: default delay being used by the command
+        :raise KeyError: If get_default_delay method of script cannot
+            be found in `_script`.
         """
-        return self._get_default_delay()
+
+        if self._script:
+            # shouldn't raise an error, but going to check anyways
+            try:
+                return self._script['get_default_delay']()
+            except KeyError as e:
+                # change the error message and re-raise
+                e.args = (
+                    "Unable to get default delay for script (missing "
+                    "`get_default_delay` function)",
+                )
+                raise
+        else:
+            return self._default_delay
 
     @default_delay.setter
     def default_delay(self, new_delay):
         """
-        Create the setter for the default_delay property. Dynamically
-        uses the defined `_set_default_delay` method to set the value
-        of this attribute.
+        Create the setter for the default_delay property. Setting the
+        default delay depends on whether or not this command is a part
+        of a script. If so, then the command will set the default delay
+        for the script, otherwise this instance's value will be used.
 
-        :param int new_delay: New delay to set
-        :return: None
+        :raise KeyError: If set_default_delay method of script cannot
+            be found in `_script`
         """
 
-        self._set_default_delay(new_delay)
+        if self._script:
+            try:
+                self._script['set_default_delay']()
+            except KeyError as e:
+                # change error message and re-raise
+                e.args = (
+                    "Unable to set default delay for script (missing "
+                    "`set_default_delay` function)",
+                )
+                raise
+        else:
+            self._default_delay = new_delay
 
     def _to_python(self, dline):
         """
@@ -358,10 +386,10 @@ class DuckyCommand(object):
             raise ValueError(msg)
         else:
             # Translate the command if it is an alias
-            if is_valid_alias(dline):
-                dline = get_alias_target(dline)
+            if is_valid_alias(dline[0]):
+                dline[0] = get_alias_target(dline[0])
                 self.logger.debug(
-                    "Given command is an alias for {}".format(dline)
+                    "Given command is an alias for '{}'".format(dline)
                 )
 
             # Go through possible commands, using python equivalents
@@ -388,7 +416,9 @@ class DuckyCommand(object):
                     )
                 )
                 # emulate with instance method
-                return _set_args(self._set_default_delay, int(dline[1]))
+                return _set_args(
+                    self._script['set_default_delay'], int(dline[1])
+                )
 
             elif dline[0] == 'STRING':
                 self.logger.debug(
@@ -399,12 +429,34 @@ class DuckyCommand(object):
                 # use pyautogui.typewrite to write out the given string
                 return _set_args(pyautogui.typewrite, str(dline[1]))
 
+            elif dline[0] == 'REPEAT':
+                self.logger.debug(
+                    "Got command REPEAT with num: {}".format(dline[1])
+                )
+
+                try:
+                    to_repeat = self._script['commands'][self.lineno - 1]
+                # 'commands' not found
+                except KeyError as e:  # 'commands' not found
+                    msg = "Unable to parse REPEAT command, as access to " \
+                          "list of commands in script was not given " \
+                          "(missing `commands` in `_script`."
+                    self.logger.error(msg, exc_info=True)
+                    e.args = (msg, )
+                    raise
+                # first command in script, so just do nothing
+                except IndexError:
+                    to_repeat = _cmd_rem
+
+                # use repeat command
+                return _set_args(_cmd_repeat, to_repeat, int(dline[1]))
+
             else:  # given a key to press
                 # translate_key return data will be a tuple of tuples, so
                 # use sum to 'add' the tuples together into one tuple (unpack)
                 keys = sum(tuple(translate_key(key) for key in dline), ())
                 self.logger.debug(
-                    "Was given following keys to press: {}".format(
+                    "Was given following keys to press: '{}'".format(
                         ','.join(keys)
                     )
                 )
@@ -462,6 +514,14 @@ class DuckyScript(object):
         self.commands = []
         # set default delay
         self._default_delay = 0
+
+        # create a script 'interface' that commands will use for
+        # default delay and repeats
+        self._script = {
+            'set_default_delay': self._set_default_delay,
+            'get_default_delay': self._get_default_delay,
+            'commands':  self.commands
+        }
 
         # check if the file exists and is not a directory
         if not os.path.exists(dpath):
@@ -561,17 +621,14 @@ class DuckyScript(object):
                     try:
                         # create object
                         dcmd = DuckyCommand(
-                            line, lineno=lineno,
-                            set_dd_func=self._set_default_delay,
-                            get_dd_func=self._get_default_delay
+                            line, lineno=lineno, script=self._script
                         )
 
                         # append to command list
                         self.commands.append(dcmd)
-                    except ValueError as e:
+                    except Exception as e:
                         # log the error and raise again
-                        msg = "Unable to parse line, contains invalid " \
-                              "command (line {}): {!r}".format(
+                        msg = "Unable to parse line at {}: {!r}".format(
                             lineno, line
                         )
                         self.logger.error(msg, exc_info=True)
