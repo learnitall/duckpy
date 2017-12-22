@@ -10,6 +10,6 @@ improving the functionality and stability of duckpy.
 * **Tests** Need to create unit tests (with coverage) and integration/build
   tests through a utility like travis-cli. Those kinds of tests will probably
   fail however, as the lack of an X server will prevent pyautogui from running.
-* **In-Memory file support** Allow `duck.DuckyScript` to support loading from
+* **In-Memory file support** Allow ``duck.DuckyScript`` to support loading from
   a StringIO instance.
 * **Distribution via pip**
