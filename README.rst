@@ -4,10 +4,19 @@ duckpy: built for laziness and profit
 
 .. Define badge images
 .. |vbadge| image:: https://img.shields.io/badge/duckpy-v0.1.1-yellow.svg
+      :target: https://www.github.com/developforlizardz/duckpy
+      :alt: duckpy v0.1.1
 .. |pybadge| image:: https://img.shields.io/badge/python-3-brightgreen.svg
+      :target: https://www.python.org
+      :alt: Python 3
 .. |mitbadge| image:: https://img.shields.io/badge/license-MIT-blue.svg
+      :target: https://duckpy.readthedocs.io/en/latest/license.html
+      :alt: MIT License
+.. |rtdbadge| image:: https://readthedocs.org/projects/duckpy/badge/?version=latest
+      :target: http://duckpy.readthedocs.io/en/latest/?badge=latest
+      :alt: Documentation status
 
-|vbadge| |pybadge| |mitbadge|
+|vbadge| |pybadge| |mitbadge| |rtdbadge|
 
 .. Give notice about early stages
 
@@ -26,4 +35,5 @@ source duckyscript interpreter written in Python.**
 
 .. landing_marker_end
 
-Documentation can be found on `readthedocs`.
+Documentation can be found on `readthedocs
+<https://duckpy.readthedocs.io/en/latest>`_
