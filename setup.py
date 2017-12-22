@@ -35,7 +35,10 @@ setup(
     license='mit',
     packages=['duckpy'],
     install_requires=[
-      'pyautogui',
+      'pyautogui'
     ],
+    extras_require={
+        'docs': ['releases']
+    },
     include_package_data=True
 )

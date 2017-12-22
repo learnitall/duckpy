@@ -1,0 +1,7 @@
+# Configure readthedocs configuration
+
+python:
+    # install extra requirements found in setup.py file under 'docs'
+    pip_install: true
+    extra_requirements:
+        - docs
