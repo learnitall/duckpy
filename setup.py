@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-# pyobjc-core pyobjc osx
-# python3-xlib linux
-# also apt-get scrot python3-tk python3-dev
+Setup.py installation file for duckpy.
 """
 
 from setuptools import setup
