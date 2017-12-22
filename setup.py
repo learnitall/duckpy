@@ -4,12 +4,20 @@
 Setup.py installation file for duckpy.
 """
 
+import os
 from setuptools import setup
 
 
 def readme():
     with open('README.rst') as f:
         return f.read()
+
+
+# If installing on READTHEDOCS then don't install pyautogui
+if os.environ.get('READTHEDOCS') == 'True':
+    install_reqs = []
+else:
+    install_reqs = ['pyautogui']
 
 
 setup(
@@ -32,9 +40,7 @@ setup(
     author_email='developforlizardz@gmail.com',
     license='mit',
     packages=['duckpy'],
-    install_requires=[
-      'pyautogui'
-    ],
+    install_requires=install_reqs,
     extras_require={
         'docs': ['releases']
     },
