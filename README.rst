@@ -1,55 +1,29 @@
-===================================================
-duckpy: a duckyscript interpreter written in Python
-===================================================
+=====================================
+duckpy: built for laziness and profit
+=====================================
 
 .. Define badge images
+.. |vbadge| image:: https://img.shields.io/badge/duckpy-v0.1.1-yellow.svg
 .. |pybadge| image:: https://img.shields.io/badge/python-3-brightgreen.svg
 .. |mitbadge| image:: https://img.shields.io/badge/license-MIT-blue.svg
 
+|vbadge| |pybadge| |mitbadge|
 
-|pybadge| |mitbadge|
+.. Give notice about early stages
 
+**Note:** This project is in very early development and is not thoroughly
+tested.
 
-Ever find it tedious to write, modify and/or test a duckyscript? Ever wanted
-to just execute it as if it was a script? duckpy has been written just for
-this purpose. It converts duckyscript commands into Python functions (with
-assistance from the `pyautogui <https://github.com/asweigart/pyautogui>`_
-module) straight from the command line.
+.. Description
 
-**Note:** This project is in very early development and should be considered
-unstable.
+Meant for those looking to escape the tedious workings involved in the
+testing of `duckyscripts
+<https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Duckyscript>`_ for hak5's
+`Rubber Ducky <https://hakshop.com/products/usb-rubber-ducky-deluxe>`_, duckpy
+is capable of executing duckyscript right on a target machine by translating
+given commands into executable Python functions. It's essentially **an open
+source duckyscript interpreter written in Python.**
 
+.. landing_marker_end
 
-Usage
------
-
-After installing, just run duckpy as a module and pass it the filepath to
-a duckyscript for execution:
-
-``python3 -m duckpy [script name]``
-
-Use -v/--verbose to print logs:
-
-``python3 -m duckpy -v [script name]``
-
-Or use -vv/--vverbose to print all the logs!:
-
-``python3 -m duckpy -vv [script name]``
-
-
-Dependencies
-------------
-
-Requires pyautogui module. Installation instructions can be found
-`here <https://pyautogui.readthedocs.io/en/latest/install.html>`_
-
-
-Installation
-------------
-
-Just use the given ``setup.py`` script:
-
-``python3 setup.py install``
-
-
-.. include:: ./LICENSE.rst
+Documentation can be found on `readthedocs`.

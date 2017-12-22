@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-duck.py: duckyscript interpreter written in Python
+duck.py: Core module behind duckpy's functionality.
 """
 
 import sys
@@ -61,14 +61,14 @@ def _set_args(func, *args, **kwargs):
     arguments to be set ahead of time. The returned function will
     not take in any arguments and will have the following attributes:
 
-        - args: arguments that were passed to the wrapped function
-        - kwargs: kwargs that were passed to the wrapped function
-        - __name__: Will be overwritten with the wrapped function's
+        * args: arguments that were passed to the wrapped function
+        * kwargs: kwargs that were passed to the wrapped function
+        * __name__: Will be overwritten with the wrapped function's
             name.
 
     :param func: Function to set the arguments for.
-    :param args: Arguments to pass to `func`.
-    :param kwargs: Keyword arguments to pass to `func`.
+    :param args: Arguments to pass to ``func``.
+    :param kwargs: Keyword arguments to pass to ``func``.
     :return: Function that when executed, will call the given function
         with the given arguments.
     """
@@ -86,7 +86,7 @@ def _set_args(func, *args, **kwargs):
 def _cmd_rem(comment):
     """
     Function that just takes in a comment and does nothing with it to
-    simulate the `REM` command.
+    simulate the ``REM`` command.
 
     :param str comment: Comment string passed to the REM command.
     :return: None
@@ -97,7 +97,7 @@ def _cmd_rem(comment):
 
 def _cmd_delay(ms):
     """
-    Simulates the `DELAY` command by sleeping for the given number of
+    Simulates the ``DELAY`` command by sleeping for the given number of
     milliseconds.
 
     :param int ms: Number of milliseconds to sleep.
@@ -109,8 +109,8 @@ def _cmd_delay(ms):
 
 def _cmd_repeat(dcmd, num_times):
     """
-    Simulates the `REPEAT` command by continually executing the given
-    `DuckyCommand` for `num_times` number of times.
+    Simulates the ``REPEAT`` command by continually executing the given
+    :py:class:`DuckyCommand` for ``num_times`` number of times.
 
     :param DuckyCommand dcmd: Command to repeat
     :param int num_times: Number of times to repeat
@@ -131,12 +131,13 @@ def _cmd_repeat(dcmd, num_times):
 def is_valid_alias(dcmd):
     """
     Checks to see if the given ducky command is an alias (i.e. in the
-    global variable `ALIAS`), returning `True` if it is. If the given
-    command is not an alias for another, then `False` is returned.
+    global variable ``ALIAS``), returning ``True`` if it is. If the
+    given command is not an alias for another, then ``False`` is
+    returned.
 
-    .. note:: `False` will still be returned if a command is given that
-        has an alias. For instance, `is_alias('ESC')` is `True`,
-        `is_alias('ESCAPE')` is `False`.
+    .. note:: ``False`` will still be returned if a command is given
+       that has an alias. For instance, ``is_alias('ESC')`` is
+       ``True``, ``is_alias('ESCAPE')`` is ``False``.
 
     :param str dcmd: Duckyscript command to check (case sensitive).
     :rtype: bool
@@ -152,7 +153,7 @@ def get_alias_target(dalias):
 
     :param str dalias: Duckyscript alias (case sensitive)
     :return: Duckyscript command the alias targets.
-    :raises ValueError: if given duckyscript alias is not valid
+    :raises ValueError: If given duckyscript alias is not valid
         (this includes if the given duckyscript command is not an
         alias).
     """
@@ -170,11 +171,11 @@ def get_alias_target(dalias):
 def get_alias(dcmd):
     """
     Returns the known alias for the given ducky command. If the
-    given command does not have an alias, then `None` is returned.
+    given command does not have an alias, then ``None`` is returned.
 
     :param str dcmd: Duckyscript command to get the known alias of
         (case sensitive).
-    :return: Command's alias if it exists, or `None`.
+    :return: Command's alias if it exists, or ``None``.
     :raises ValueError: if given ducky command is invalid.
     :raises TypeError: if the given ducky command is already an alias.
     """
@@ -198,28 +199,28 @@ def get_alias(dcmd):
 
 def translate_key(dkey):
     """
-    Translates the given duckyscript key into a pyautogui key name. A
-    three step process is used to to this:
+    Translates the given duckyscript key into a ``pyautogui`` key
+    name. A three step process is used to to this:
 
         1. Check if the key is an alias, and if it is, get its target.
-        2. Translate the key using either `TRANSLATE_KEYS` if the key
+        2. Translate the key using either ``TRANSLATE_KEYS`` if the key
            has a special translation or by setting the key to all
-           lowercase. If a key such as CTRL-ALT is given (two key
+           lowercase. If a key such as ``CTRL-ALT`` is given (two key
            modifier) then each key in the macro will be translated
            individually.
-        3. Check if the key is found in `pyautogui.KEYBOARD_KEYS`,
-           returning None if it isn't found.
+        3. Check if the key is found in ``pyautogui.KEYBOARD_KEYS``,
+           returning ``None`` if it isn't found.
 
     A tuple of the translated key is returned, so that it may be
-    passed right into pyautogui commands, even if more than one key
-    is translated in the case a modifier was given.
+    passed right into ``pyautogui`` commands even if more than one
+    key is translated in the case a modifier was given.
 
     :param str dkey: Duckyscript key to translate.
     :rtype: tuple
-    :return: pyautogui name of the given key inside a tuple if it
-        could be translated, otherwise `(None, )`. If a given key name
-        translates to more than one key, then a tuple of each key is
-        returned (i.e. CTRL-ALT -> ('ctrl', 'alt'))
+    :return: ``pyautogui`` name of the given key inside a tuple if it
+        could be translated, otherwise ``(None, )``. If a given key
+        name translates to more than one key, then a tuple of each key
+        is returned (i.e. ``CTRL-ALT`` -> ``('ctrl', 'alt')``)
     """
 
     # check if a two key modifier was given
@@ -250,7 +251,7 @@ def is_valid_cmd(dcmd):
     :param str dcmd: Duckyscript command to check the validity of
         (case sensitive). Aliases and keys can also be given.
     :rtype: bool
-    :return: True if valid, False otherwise
+    :return: ``True`` if valid, ``False`` otherwise
     """
 
     # try translating it as a key
@@ -264,19 +265,21 @@ def is_valid_cmd(dcmd):
 class DuckyCommand(object):
     """
     Execute a line of duckyscript in Python. Will log to the logger
-    entitled `duckpy`.
+    entitled **duckpy**.
 
     :param str dline: Raw duckyscript line to execute/model.
     :param int lineno: Line number of the given duckyscript line if
-        it is a part of a script (defaults to -1, which indicates the
-        line is not in a script).
+        it is a part of a script (defaults to ``-1``, which indicates
+        the line is not in a script).
     :param int default_delay: Default delay to use while executing.
         Essentially determines how long to wait before executing a
-        command (except in the case of REM)
-    :param dict script: Dictionary of `DuckyScript` methods used for
-        setting default delays and repeating commands. Used internally
-        by the `DuckyScript` class (see `DuckyScript.load`).
-    :raises ValueError: If `scripts` kwarg does not contain all
+        command (except in the case of ``REM``, where this delay is
+        skipped).
+    :param dict script: Dictionary of :py:class:`DuckyScript` methods
+        used for setting default delays and repeating commands. Used
+        internally by the :py:class:`DuckyScript` class (see
+        :py:meth:`DuckyScript.load`).
+    :raises ValueError: If ``scripts`` kwarg does not contain all
         necessary keys for execution.
     """
 
@@ -317,15 +320,15 @@ class DuckyCommand(object):
     @property
     def default_delay(self):
         """
-        Create the default delay property. Value of this property
-        will be determined by whether or not this command is a part of
-        a script. If so, then the script's default delay value will
+        default_delay property. Value of this property will be
+        determined by whether or not this command is a part of a
+        script. If it is, then the script's default delay value will
         be used, otherwise this instance's value will be used.
 
         :rtype: int
         :return: default delay being used by the command
         :raise KeyError: If get_default_delay method of script cannot
-            be found in `_script`.
+            be found in :py:attr:`_script`.
         """
 
         if self._script:
@@ -351,7 +354,7 @@ class DuckyCommand(object):
         for the script, otherwise this instance's value will be used.
 
         :raise KeyError: If set_default_delay method of script cannot
-            be found in `_script`
+            be found in ``self._script``
         """
 
         if self._script:
@@ -369,7 +372,7 @@ class DuckyCommand(object):
 
     def _to_python(self, dline):
         """
-        Parses the given duckyscript line into a python function.
+        Parses the given duckyscript line into a Python function.
 
         :param str dline: Duckyscript line to translate.
         :return: Python function that when executed, will simulate the
@@ -496,7 +499,8 @@ class DuckyCommand(object):
 class DuckyScript(object):
     """
     Representation of a duckyscript file. Allows for reading, parsing
-    and execution. Duckyscript will be parsed and loaded on creation.
+    and execution. The given Duckyscript file to represent will be
+    parsed and loaded on creation.
 
     :param str dpath: Path to duckyscript (text) file
     :raises OSError: If given path to a duckyscript file either
@@ -562,10 +566,10 @@ class DuckyScript(object):
     @property
     def default_delay(self):
         """
-        Create the default delay property, using `_get_default_delay`
-        as the getter method.
-
-        :return: `_get_default_delay()`
+        default_delay property, using `_get_default_delay` as the
+        getter method. default_delay is made into a property so the
+        getter and setter methods can be passed onto children
+        :py:class:`DuckyCommand` instances.
         """
 
         return self._get_default_delay()
@@ -585,8 +589,8 @@ class DuckyScript(object):
         """
         Loads the duckyscript and parses it into python functions for
         execution. Note that every time this method is called the
-        duckyscript will be read and parsed (i.e. supports reloading of
-        script).
+        duckyscript will be read and parsed (i.e. this method supports
+        reloading of scripts).
 
         :raises ValueError: If line in duckyscript file cannot be
             parsed.
@@ -643,9 +647,9 @@ class DuckyScript(object):
 
     def run(self):
         """
-        Runs the duckyscript (loading if necessary) by executing all
-        of the parsed commands sequentially. Will raise any errors
-        that may possibly occur during execution.
+        Runs the duckyscript file (loading it if necessary) by
+        executing all of the parsed commands sequentially. Will 'pass
+        through' any errors that may possibly occur during execution.
 
         :return: None
         """
@@ -675,11 +679,13 @@ class DuckyScript(object):
 
 def main(cli_args=None):
     """
-    Take in a duckyscript, parse it and execute it. This function will
-    be called by executing `python -m duckpy` however it can also be
-    called manually (pass command line arguments through `args`)
+    Takes in a duckyscript file, parses it and executes it. This
+    function can be called by executing `python -m duckpy` however it
+    can also be called manually by passing command line arguments
+    through ``args``)
 
     :param str cli_args: Pass command line arguments directly.
+        Example: ``"my_payload.txt -v"``
     :return: None
     """
 
@@ -691,7 +697,7 @@ def main(cli_args=None):
 
     # add arguments
     parser.add_argument(
-        "script", help="duckyscript to execute (should be plaintext)"
+        "dscript", help="duckyscript file to execute (should be plaintext)"
     )
     parser.add_argument(
         "-v", "--verbose", help="Print log messages to screen (level INFO)",
@@ -721,7 +727,7 @@ def main(cli_args=None):
     logging.getLogger('duckpy').setLevel(log_level)
 
     # execute script and exit
-    script = DuckyScript(args.script)
+    script = DuckyScript(args.dscript)
     script.run()
 
 
