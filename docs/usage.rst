@@ -31,7 +31,7 @@ given by ``--help``:
 Feature Set
 -----------
 
-Duckyscript is broken down into three types of commands:
+Duckyscript is broken down into essentially three parts:
 
    1. **Commands:** These involve the workflow controls that duckyscript
       offers (REPEAT, DEFAULT_DELAY, DELAY, STRING, REM)
@@ -55,13 +55,13 @@ is to eventually support all keys specified in the
 Failsafe
 --------
 
-The Rubber Ducky has a universal fail-safe feature that can be utilized during
-worst case scenarios: physically unplugging it. Since duckpy is a 'logical
-device' and can't be unplugging, ``pyautogui``'s `failsafe
+The Rubber Ducky is a physical device, meaning that in a worst case scenario
+it can be unplugged to stop the execution of a payload. Since duckpy isn't
+physical and can't be unplugged, ``pyautogui``'s `failsafe
 <http://pyautogui.readthedocs.io/en/latest/introduction.html#fail-safes>`_
-feature has been utilized to stop execution. In the case of an emergency, just
-move the mouse into the upper left hand corner of the screen and duckpy will
-error out.
+feature has been utilized instead to stop execution. In the case of an
+emergency, just move the mouse into the upper left hand corner of the screen
+and duckpy will error out.
 
 
 Logging/Debugging
