@@ -128,7 +128,7 @@ html_sidebars = {
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'duckpydoc'
 
-# -- Options for releases extention ---------------------------------------
+# -- Options for releases extension ---------------------------------------
 
 releases_issue_url = "https://github.com/developforlizardz/duckpy/issues/%s"
 releases_release_url = "https://github.com/developforlizardz/duckpy/tree/%s"
