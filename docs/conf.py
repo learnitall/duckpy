@@ -138,5 +138,4 @@ releases_release_url = "https://github.com/developforlizardz/duckpy/tree/%s"
 # If building on RTD, need to create a fake module for pyautogui
 if os.environ.get('READTHEDOCS') == 'True':
     from types import ModuleType
-    pyautogui_fake = ModuleType('pyautogui')
-    sys.modules['pyautogui'] = pyautogui_fake
+    sys.modules['pyautogui'] = ModuleType('pyautogui')
