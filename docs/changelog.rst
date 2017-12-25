@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* :support:`-` Allowed for private methods and functions to be visible in
+  module documentation.
 * :support:`-` Improved clarity of documentation by elaborating in areas that
   were lacking an explanation and by slightly changing the wording in some
   areas.
