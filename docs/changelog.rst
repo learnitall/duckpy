@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* :support:`-` Improved clarity of documentation by elaborating in areas that
+  were lacking an explanation and by slightly changing the wording in some
+  areas.
 * :release:`0.1.1 <2017-12-18>`
 * :support:`-` Created initial documentation (this involved refactoring the
   README).

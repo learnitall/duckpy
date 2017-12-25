@@ -25,8 +25,8 @@ tested.
 
 .. Description
 
-Meant for those looking to escape the tedious workings involved in the
-testing of `duckyscripts
+Initially created to help those looking to escape the tedious workings
+involved in testing and writing `duckyscripts
 <https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Duckyscript>`_ for hak5's
 `Rubber Ducky <https://hakshop.com/products/usb-rubber-ducky-deluxe>`_, duckpy
 is capable of executing duckyscript right on a target machine by translating
@@ -36,4 +36,4 @@ source duckyscript interpreter written in Python.**
 .. landing_marker_end
 
 Documentation can be found on `readthedocs
-<https://duckpy.readthedocs.io/en/latest>`_
+<https://duckpy.readthedocs.io/en/latest>`_.

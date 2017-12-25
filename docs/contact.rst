@@ -7,4 +7,5 @@ standard contribution format (yet?) so no need to worry about that, however
 clarity and detail is always appreciated.
 
 Any other questions, comments, concerns, requests, etc. can be send to the
-developer directly (Ryan Drew) at ``developforlizardz@gmail.com``. Thanks!
+developer directly (Ryan Drew) at ``developforlizardz@gmail.com``. Feedback is
+always welcomed! Thanks!

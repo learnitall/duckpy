@@ -137,5 +137,22 @@ Python Execution
 
 Although it's meant to be executed from the CLI, duckpy can be used within
 Python quite easily to run duckyscript commands, check available/supported
-keys and check aliases. See the `duckpy <duckpy.html>`_ module documentation
-for more information.
+keys, check aliases and much more. For instance, to wait two seconds and then
+hit control-alt-delete, one can execute:
+
+.. code-block:: bash
+
+   $ sleep 2; python3 -c 'import duckpy; duckpy.DuckyCommand("CTRL-ALT DELETE").execute()'
+
+To check the validity of a duckyscript command, one can execute:
+
+.. code-block:: python
+
+   >>> import duckpy
+   >>> duckpy.is_valid_cmd("CTL")
+   False
+   >>> duckpy.is_valid_cmd("CTRL")
+   True
+   >>>
+
+See the `duckpy <duckpy.html>`_ module documentation for more information.
