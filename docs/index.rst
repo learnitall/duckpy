@@ -16,6 +16,7 @@
    duckpy
    install
    usage
+   approach
    contact
    license
    todo

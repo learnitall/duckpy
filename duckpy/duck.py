@@ -372,7 +372,29 @@ class DuckyCommand(object):
 
     def _to_python(self, dline):
         """
-        Parses the given duckyscript line into a Python function.
+        Parses the given duckyscript line into a Python function. The
+        command in the line (i.e. the substring that lies before the
+        first space) will be parsed and then matched against known
+        commands. If a match is found, the appropriate Python function
+        is constructed and returned. If a match is not found, a
+        function will still be constructed and returned, however the
+        line will be interpreted as a series of keys to press instead
+        of a command (for instance if ``GUI r`` was given, ``GUI`` will
+        be seen as a key and not a command). A pre-check is done prior
+        to the matching process, to ensure that the given command/key
+        combo is valid.
+
+        Here's a list of translations for commands and their Python
+        functions:
+
+        * REM: :py:func:`duckpy.duck._cmd_rem`
+        * DELAY: :py:func:`duckpy.duck._cmd_delay`
+        * DEFAULT_DELAY: This is done internally, see the default_delay
+          parameter in the source code for details.
+        * STRING: :py:func:`pyautogui.typewrite`
+        * REPEAT: This is again done internally, see source code for more
+          details.
+        * (Other): :py:func:`pyautogui.hotkey`.
 
         :param str dline: Duckyscript line to translate.
         :return: Python function that when executed, will simulate the
