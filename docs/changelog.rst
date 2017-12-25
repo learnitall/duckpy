@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* :support:`-` Added page *Approach* to documentation, discussing the
+  problems duckpy tries to address and its inner workings.
 * :support:`-` Allowed for private methods and functions to be visible in
   module documentation.
 * :support:`-` Improved clarity of documentation by elaborating in areas that
